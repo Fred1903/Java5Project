@@ -5,11 +5,12 @@ import java.util.Optional;
 import be.helb_prigogine.player_manager.entities.Player;
 
 
-
+//It is better to add Optional when we are note sure that the player exists because in this case we will not have to  manage it
 public interface IPlayerDAO {
     Player savePlayer(Player player);
-    void deletePlayer(Long id);
+    void deletePlayerById(Long id);
+    Optional<Player> findPlayerById(Long id);
 
-    Optional<Player> findByEmail(String email);
-    Optional<Player> findByPseudonym(String pseudonym);
+    Optional<Player> findPlayerByEmail(String email);
+    Optional<Player> findPlayerByPseudonym(String pseudonym);
 }

@@ -16,17 +16,17 @@ public class PlayerDAO implements IPlayerDAO {
     }
 
     @Override
-    public Optional<Player> findByEmail(String email) {
+    public Optional<Player> findPlayerByEmail(String email) {
         return playerRepository.findByEmail(email);
     }
 
     @Override
-    public Optional<Player> findByPseudonym(String pseudonym) {
+    public Optional<Player> findPlayerByPseudonym(String pseudonym) {
         return playerRepository.findByPseudonym(pseudonym);
     }
 
     @Override
-    public void deletePlayer(Long id) {
+    public void deletePlayerById(Long id) {
         playerRepository.deleteById(id);
     }
 
@@ -34,5 +34,15 @@ public class PlayerDAO implements IPlayerDAO {
     public Player savePlayer(Player player) {
         return playerRepository.save(player);
     }
+
+    @Override
+    public Optional<Player> findPlayerById(Long id) {
+        return playerRepository.findById(id);
+    }
+
+    /*@Override
+    public boolean isPlayerExistingById(Long id) {
+        return playerRepository.existsById(id);
+    }*/ //Pas besoin car on peut faire findByID.isPresent
     
 }

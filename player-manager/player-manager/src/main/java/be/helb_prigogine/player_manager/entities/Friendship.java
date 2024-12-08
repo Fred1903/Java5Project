@@ -19,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "friend", schema = "java5project")
-public class Friend {
+public class Friendship {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
