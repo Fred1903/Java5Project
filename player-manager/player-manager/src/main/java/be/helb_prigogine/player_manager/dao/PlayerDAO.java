@@ -1,5 +1,7 @@
 package be.helb_prigogine.player_manager.dao;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import be.helb_prigogine.player_manager.entities.Player;
@@ -11,6 +13,16 @@ public class PlayerDAO implements IPlayerDAO {
 
     public PlayerDAO(PlayerRepository playerRepository) {
         this.playerRepository = playerRepository;
+    }
+
+    @Override
+    public Optional<Player> findByEmail(String email) {
+        return playerRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<Player> findByPseudonym(String pseudonym) {
+        return playerRepository.findByPseudonym(pseudonym);
     }
 
     @Override
