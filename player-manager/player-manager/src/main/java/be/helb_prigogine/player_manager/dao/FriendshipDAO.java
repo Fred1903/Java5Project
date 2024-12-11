@@ -27,7 +27,7 @@ public class FriendshipDAO implements IFriendshipDAO{
         throw new UnsupportedOperationException("Unimplemented method 'areFriends'");
     }
 
-    @Override
+    @Override       
     public Optional<Friendship> findFriendByIds(Long idPlayer, Long idFriend) {
         return friendshipRepository.findByIdPlayerAndIdFriend(idPlayer, idFriend);
     }

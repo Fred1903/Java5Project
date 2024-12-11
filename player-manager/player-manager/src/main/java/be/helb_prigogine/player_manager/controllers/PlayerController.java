@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 
 import be.helb_prigogine.player_manager.dto.CreatePlayerDTO;
 import be.helb_prigogine.player_manager.dto.PlayerDTO;
@@ -18,6 +19,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/players")
+@Validated
 public class PlayerController {
 
     private final PlayerService playerService;

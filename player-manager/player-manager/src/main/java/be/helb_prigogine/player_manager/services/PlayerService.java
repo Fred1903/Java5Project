@@ -92,7 +92,7 @@ public class PlayerService implements IPlayerService {
 
 
     @Override
-    public Optional<PlayerDTO> getPlayerInformations(Long id) {
+    public Optional<PlayerDTO> getPlayerInformations(Long id) { //On doit encore ajouter sa liste d'amis !!!!!!!!!!!!!!!!!!!!!!
         Optional<Player> player=playerDAO.findPlayerById(id);
         //On map le optionnal pour en faire un player, si il existe alors on renvoie le dto de ce dernier, sinon on renvoie optional.empty et
         //on ne rentre pas dasns le modelMapper
