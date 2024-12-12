@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-class PlayerServiceUnitTest {
+class PlayerServiceTest {
 
     @Mock
     private IPlayerDAO playerDAO;
@@ -35,7 +36,7 @@ class PlayerServiceUnitTest {
     @InjectMocks
     private PlayerService playerService;
 
-    public PlayerServiceUnitTest() {
+    public PlayerServiceTest() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -127,6 +128,83 @@ class PlayerServiceUnitTest {
         assertNotNull(result);
         assertEquals(100, mockPlayer.getTotalPoints()); // Overflow points after leveling up
         assertEquals(1, mockPlayer.getLevel()); // Level increased by 1
+    }
+
+    @Test
+    void createPlayer_shouldThrowExceptionWhenEmailExists() {
+        CreatePlayerDTO createPlayerDTO = new CreatePlayerDTO();
+        createPlayerDTO.setEmail("player1@example.com");
+        createPlayerDTO.setPseudonym("PlayerOne");
+
+        when(playerDAO.findPlayerByEmail(createPlayerDTO.getEmail())).thenReturn(Optional.of(new Player()));
+
+        ResponseStatusException exception = assertThrows(
+            ResponseStatusException.class,
+            () -> playerService.createPlayer(createPlayerDTO)
+        );
+
+        assertEquals("There is already a player with this email", exception.getReason());
+        verify(playerDAO, never()).savePlayer(any(Player.class));
+    }
+
+    @Test
+    void createPlayer_shouldThrowExceptionWhenPseudonymExists() {
+        CreatePlayerDTO createPlayerDTO = new CreatePlayerDTO();
+        createPlayerDTO.setEmail("player2@example.com");
+        createPlayerDTO.setPseudonym("PlayerOne");
+
+        when(playerDAO.findPlayerByPseudonym(createPlayerDTO.getPseudonym())).thenReturn(Optional.of(new Player()));
+
+        ResponseStatusException exception = assertThrows(
+            ResponseStatusException.class,
+            () -> playerService.createPlayer(createPlayerDTO)
+        );
+
+        assertEquals("There is already a player with this pseudonym", exception.getReason());
+        verify(playerDAO, never()).savePlayer(any(Player.class));
+    }
+
+    @Test
+    void deletePlayer_shouldReturnFalseWhenPlayerNotFound() {
+        Long playerId = 1L;
+        when(playerDAO.findPlayerById(playerId)).thenReturn(Optional.empty());
+
+        boolean result = playerService.deletePlayer(playerId);
+
+        assertFalse(result);
+        verify(playerDAO, never()).deletePlayerById(playerId); // Ensure deletePlayerById is not called
+        verify(playerDAO).findPlayerById(playerId);           // Verify the search is performed
+}
+
+
+    @Test
+    void getPlayerInformations_shouldReturnEmptyWhenPlayerNotFound() {
+        Long playerId = 1L;
+
+        when(playerDAO.findPlayerById(playerId)).thenReturn(Optional.empty());
+
+        Optional<PlayerDTO> result = playerService.getPlayerInformations(playerId);
+
+        assertTrue(result.isEmpty());
+        verify(playerDAO).findPlayerById(playerId);
+    }
+
+    @Test
+    void updatePlayerStatistics_shouldThrowExceptionWhenPlayerNotFound() {
+        Long playerId = 1L;
+        UpdatePlayerStatisticsDTO statsDTO = new UpdatePlayerStatisticsDTO();
+        statsDTO.setPoints(50);
+        when(playerDAO.findPlayerById(playerId)).thenReturn(Optional.empty());
+        ResponseStatusException exception = assertThrows(
+            ResponseStatusException.class,
+            () -> playerService.updatePlayerStatistics(playerId, statsDTO)
+        );
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertEquals("Player not found", exception.getReason());
+
+        verify(playerDAO, never()).savePlayer(any(Player.class));
+        verify(playerDAO).findPlayerById(playerId); // Verify the search is performed
     }
 
 }

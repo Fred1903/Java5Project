@@ -106,7 +106,7 @@ public class PlayerService implements IPlayerService {
 
     @Override
     public PlayerDTO updatePlayerStatistics(Long idPlayer, UpdatePlayerStatisticsDTO updatePlayerStatisticsDTO) {
-        Player player = playerDAO.findPlayerById(idPlayer).get(); 
+        Player player = playerDAO.findPlayerById(idPlayer).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found"));
         player.setTotalPoints(player.getTotalPoints()+updatePlayerStatisticsDTO.getPoints());
         if(player.getTotalPoints()>AMOUNT_POINTS_TO_PASS_LEVEL){
             int pointsToAdd = player.getTotalPoints()-AMOUNT_POINTS_TO_PASS_LEVEL;
