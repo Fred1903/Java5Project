@@ -16,8 +16,8 @@
   - [Backend workflow](#1-backend-workflow)
   - [Database workflow](#2-database-workflow)
   - [End-to-end worfklow](#3-end-to-end-workflow)
--[E. Tests](#tests) 
--[F. How to run code and tests](#how-to-run-code-and-tests)
+- [E. Tests](#tests) 
+- [F. How to run code and tests](#how-to-run-code-and-tests)
 
 # Endpoints 
 
