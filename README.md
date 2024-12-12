@@ -16,6 +16,8 @@
   - [Backend workflow](#1-backend-workflow)
   - [Database workflow](#2-database-workflow)
   - [End-to-end worfklow](#3-end-to-end-workflow)
+-[E. Tests](#tests) 
+-[F. How to run code and tests](#how-to-run-code-and-tests)
 
 # Endpoints 
 
@@ -623,3 +625,47 @@ The database is accessed indirectly through the repository layer.
 
 7. **Response**:  
    The service converts the data into a DTO (Data Transfer Object) and sends it back to the controller, which returns an HTTP response to the client.
+
+--- 
+
+# Tests
+
+## Testing Services
+
+The **Service** layer was tested to validate the functionality of the business logic under various scenarios:
+
+- **With Correct Values**: Ensured the services returned expected results for valid inputs.
+- **With False Values**: Verified that services handled invalid inputs and edge cases appropriately.
+
+### Tools and Techniques:
+- **Mockito**: Used `@Mock` to simulate dependencies, ensuring isolation of the service logic.
+- **JUnit Assertions**: Applied `assertEquals` to verify that the actual results matched the expected ones.
+- **when()...thenReturn()**: Mocked the behavior of service dependencies to simulate various scenarios.
+
+## Controller Testing
+- **Correct Values**: Verify that controllers return the expected HTTP status codes and response bodies for valid requests.
+- **False Values**: Test how controllers respond to invalid or incomplete requests, ensuring proper error handling and validation.
+
+## Tools and Techniques
+- **MockMVC**: Used to test HTTP requests and responses in isolation without starting the full application.
+- **Mockito**: Mocked service dependencies to focus only on the controller's behavior.
+- **JUnit Assertions**: Used to verify status codes and response contents.
+
+---
+
+# How to run code and tests
+
+## 1. Start the Application
+```bash
+mvn spring-boot:run
+```
+
+## 2. Execute all tests
+```bash
+mvn test
+```
+
+## 3. Execute one test
+```bash
+mvn test -Dtest=ClassNameTest test
+```
