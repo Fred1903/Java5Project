@@ -33,7 +33,7 @@ public class PlayerService implements IPlayerService {
         this.friendService=friendService;
     }
 
-    @Override  /// IF I HAVE TIME I SHOULD CHANGE THE CODE HERE BECAUSE HTTP MESSAGES SHOULD BE SENT FROM THE CONTROLLER AND NOT IN THE SERVICE
+    @Override 
     public PlayerDTO createPlayer(CreatePlayerDTO createPlayerDTO) {
         if (playerDAO.findPlayerByEmail(createPlayerDTO.getEmail()).isPresent()) {
             throw new ResponseStatusException(
@@ -69,7 +69,6 @@ public class PlayerService implements IPlayerService {
         Optional<Player> player=playerDAO.findPlayerById(id);
         //On map le optionnal pour en faire un player, si il existe alors on renvoie le dto de ce dernier, sinon on renvoie optional.empty et
         //on ne rentre pas dasns le modelMapper
-        //return player.map(p -> modelMapper.map(p, PlayerDTO.class));
 
         return player.map(p -> {
         PlayerDTO playerDTO = modelMapper.map(p, PlayerDTO.class);
@@ -104,13 +103,6 @@ public class PlayerService implements IPlayerService {
 
         return modelMapper.map(player, PlayerDTO.class);
     }
-
-    /*public void checkIfPlayerExists(Long idPlayer){
-        if(!playerDAO.findPlayerById(idPlayer).isPresent()){
-            throw new RuntimeException("Player with ID " + idPlayer + " does not exist");
-        }
-    }*/
-
 
     @Override
     public PlayerDTO updatePlayerStatistics(Long idPlayer, UpdatePlayerStatisticsDTO updatePlayerStatisticsDTO) {

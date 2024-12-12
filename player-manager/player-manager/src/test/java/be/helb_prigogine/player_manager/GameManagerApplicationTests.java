@@ -1,10 +1,10 @@
-package be.helb_prigogine.party_manager;
+package be.helb_prigogine.player_manager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PartyManagerApplicationTests {
+class GameManagerApplicationTests {
 
 	@Test
 	void contextLoads() {
