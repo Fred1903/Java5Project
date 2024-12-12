@@ -1,4 +1,6 @@
 package be.helb_prigogine.player_manager.dto;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +11,7 @@ public class PlayerDTO {
     private String name;
     private String email;
     private String pseudonym;
-    private int level;
-    private int totalPoints;
+    private Integer level;   
+    private Integer totalPoints;
+    private List<GetFriendDTO> friends;
 }

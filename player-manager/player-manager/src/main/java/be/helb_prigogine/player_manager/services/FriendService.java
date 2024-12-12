@@ -20,14 +20,12 @@ public class FriendService implements IFriendService {
 
     private final IFriendshipDAO friendshipDAO;
     private final IPlayerDAO playerDAO;
-    private final PlayerService playerService;
     private final ModelMapper modelMapper;
 
 
-    public FriendService(IFriendshipDAO friendshipDAO, IPlayerDAO playerDAO, PlayerService playerService,ModelMapper modelMapper) {
+    public FriendService(IFriendshipDAO friendshipDAO, IPlayerDAO playerDAO,ModelMapper modelMapper) {
         this.friendshipDAO = friendshipDAO;
         this.playerDAO=playerDAO;
-        this.playerService=playerService;
         this.modelMapper=modelMapper;
     }
 
@@ -60,8 +58,8 @@ public class FriendService implements IFriendService {
 
     @Override
     public void removeFriend(Long idPlayer, Long idFriend) {
-        playerService.checkIfPlayerExists(idPlayer);
-        playerService.checkIfPlayerExists(idFriend);
+        checkIfPlayerExists(idPlayer);
+        checkIfPlayerExists(idFriend);
         if(checkIfAlreadyFriends(idPlayer, idFriend)){
             friendshipDAO.deleteFriendByIds(idPlayer, idFriend);
         } else {
@@ -72,7 +70,7 @@ public class FriendService implements IFriendService {
     @Transactional
     public List<GetFriendDTO> getFriends(Long idPlayer) {
         //En gros on doit faire tout ca pck pas bonne pratique d utilser dto dans dao, donc on fait avec frienship mais ici ca doit etre dto
-        playerService.checkIfPlayerExists(idPlayer); 
+        checkIfPlayerExists(idPlayer); 
         List<Friendship> friendships = friendshipDAO.findFriendsByIdPlayer(idPlayer);
         List<GetFriendDTO> friendsDTO = new ArrayList<>();
     
@@ -88,16 +86,15 @@ public class FriendService implements IFriendService {
         return friendsDTO;
     }
 
-
-    /*public void checkIfPlayerExists(Long idPlayer){   -----> should be just ther one time in PlayerService
-        if(!playerDAO.findPlayerById(idPlayer).isPresent()){
-            throw new RuntimeException("Player with ID " + idPlayer + " does not exist");
-        }
-    }*/  
-
     public boolean checkIfAlreadyFriends(Long idPlayer, Long idFriend){
         Optional<Friendship> existingFriendship = friendshipDAO.findFriendByIds(idPlayer, idFriend);
         if(existingFriendship.isEmpty())return false;
         return true;
+    }
+
+    public void checkIfPlayerExists(Long idPlayer){
+        if(!playerDAO.findPlayerById(idPlayer).isPresent()){
+            throw new RuntimeException("Player with ID " + idPlayer + " does not exist");
+        }
     }
 }

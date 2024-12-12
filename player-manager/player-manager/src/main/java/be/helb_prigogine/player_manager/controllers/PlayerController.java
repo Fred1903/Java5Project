@@ -12,8 +12,13 @@ import org.springframework.validation.annotation.Validated;
 import be.helb_prigogine.player_manager.dto.CreatePlayerDTO;
 import be.helb_prigogine.player_manager.dto.PlayerDTO;
 import be.helb_prigogine.player_manager.dto.UpdatePlayerDTO;
+import be.helb_prigogine.player_manager.dto.UpdatePlayerStatisticsDTO;
 import be.helb_prigogine.player_manager.services.PlayerService;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 
@@ -86,6 +91,19 @@ public class PlayerController {
                     .body("Error while updating the player : "+e.getMessage());
         }
     }
+
+    @PutMapping("update/stats/{id}")
+    public ResponseEntity<?> updatePlayerStats(@PathVariable Long id, @RequestBody UpdatePlayerStatisticsDTO updatePlayerStatisticsDTO) {
+        System.out.println("HMMMMMMMMMMM");
+        try {
+            PlayerDTO updatedPlayer = playerService.updatePlayerStatistics(id, updatePlayerStatisticsDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedPlayer);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Error while updating the player : "+e.getMessage());
+        }
+    }
+
 
     public String getErroMessage(BindingResult bindingResult){
             return bindingResult.getAllErrors()

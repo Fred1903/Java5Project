@@ -27,6 +27,6 @@ public class Player {
     private String name;
     private String pseudonym;
     private String email;
-    private int level;
-    private int totalPoints;
+    private Integer level;
+    private Integer totalPoints;
 }

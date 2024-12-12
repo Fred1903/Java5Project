@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class GetFriendDTO {
     private String pseudonym;
-    private int level;
-    private int totalPoints;
+    private Integer level;
+    private Integer totalPoints;
 }

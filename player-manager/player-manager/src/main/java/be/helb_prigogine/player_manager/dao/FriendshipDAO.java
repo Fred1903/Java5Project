@@ -21,12 +21,6 @@ public class FriendshipDAO implements IFriendshipDAO{
         return friendshipRepository.save(friend);
     }
 
-     @Override
-    public boolean areFriends(Long idFriend1, Long idFriend2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'areFriends'");
-    }
-
     @Override       
     public Optional<Friendship> findFriendByIds(Long idPlayer, Long idFriend) {
         return friendshipRepository.findByIdPlayerAndIdFriend(idPlayer, idFriend);
